@@ -1,5 +1,7 @@
 # Mi Cartelera Personal
 
+> Estado de verificación actualizado: las capturas obligatorias están completas y las 30 pruebas de reglas en el emulador oficial pasaron. Las notas de pendientes de secciones anteriores describen etapas históricas; el estado actual se encuentra en [docs/VERIFICACION.md](docs/VERIFICACION.md).
+
 ## Objetivo y descripción
 Aplicación móvil para buscar películas y series en TMDB y guardarlas en una lista privada, con estado de visionado, calificación y comentario personales. Integra React Native, Expo, TypeScript, Firebase Auth, Firestore y AsyncStorage.
 
@@ -219,3 +221,10 @@ Evidencia adicional: el usuario aportó la captura de delete ajeno rechazado en 
 
 ### Capturas mínimas de entrega completas
 En docs/ se encuentran auth-users.png, firestore-mi-lista.png (tres documentos) y reglas-acceso-ajeno-denegado.png, además de las evidencias complementarias de lectura propia permitida, lectura sin sesión denegada y borrado ajeno denegado. Estas capturas reales sustituyen los pendientes históricos sobre imágenes. Aún deben completarse las pruebas específicas de actualización ajena/validación de campos y subirse los últimos commits a GitHub.
+
+## Pruebas de seguridad automatizadas completadas
+Las 30 pruebas de tests/firestore.rules.test.cjs pasaron en el emulador oficial con proyecto demo-mi-cartelera-reglas. Incluyen actualización ajena denegada y controles de campos con casos válidos y no válidos. No se modificó la base real. El informe reproducible está en docs/pruebas-reglas.json. Para repetir se requiere Java 21 o superior, npm install y npm run test:rules. Firebase CLI se obtiene con npx en la versión fijada en el script.
+
+Se ejecutaron también npm run typecheck y npm test correctamente. Las reglas no necesitaron cambios. La confirmación de publicación en producción sigue siendo la del usuario y sus capturas; las pruebas automatizadas validan el archivo local.
+
+Bitácora de IA: Codex creó y ejecutó las pruebas contra el emulador oficial, preparó Java portátil en la carpeta de trabajo sin instalación global y registró el resultado real. Las herramientas portátiles no forman parte de la entrega ni del repositorio.

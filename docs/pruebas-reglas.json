@@ -1,0 +1,127 @@
+{
+  "entorno": "Emulador local de Firestore; no producción",
+  "proyecto": "demo-mi-cartelera-reglas",
+  "reglasSha256": "1248409c47d441f022f4d0d7d7ef637d6acd83363691cb2a5e6fb547fea9ba67",
+  "resultados": [
+    {
+      "prueba": "Propietario puede leer su documento",
+      "resultado": "correcto"
+    },
+    {
+      "prueba": "Propietario puede consultar su lista",
+      "resultado": "correcto"
+    },
+    {
+      "prueba": "Otra cuenta no puede leer el documento",
+      "resultado": "correcto"
+    },
+    {
+      "prueba": "Otra cuenta no puede consultar la lista",
+      "resultado": "correcto"
+    },
+    {
+      "prueba": "Sin sesión no se puede leer",
+      "resultado": "correcto"
+    },
+    {
+      "prueba": "Otra cuenta no puede actualizar comentario",
+      "resultado": "correcto"
+    },
+    {
+      "prueba": "Otra cuenta no puede borrar",
+      "resultado": "correcto"
+    },
+    {
+      "prueba": "Sin sesión no se puede actualizar",
+      "resultado": "correcto"
+    },
+    {
+      "prueba": "Propietario puede actualizar estado y comentario",
+      "resultado": "correcto"
+    },
+    {
+      "prueba": "Propietario puede borrar",
+      "resultado": "correcto"
+    },
+    {
+      "prueba": "Vista permite nota 1",
+      "resultado": "correcto"
+    },
+    {
+      "prueba": "Vista permite nota 5",
+      "resultado": "correcto"
+    },
+    {
+      "prueba": "Rechaza nota 0",
+      "resultado": "correcto"
+    },
+    {
+      "prueba": "Rechaza nota 6",
+      "resultado": "correcto"
+    },
+    {
+      "prueba": "Rechaza calificación en por_ver",
+      "resultado": "correcto"
+    },
+    {
+      "prueba": "Rechaza calificación en viendo",
+      "resultado": "correcto"
+    },
+    {
+      "prueba": "Permite comentario de 500 caracteres",
+      "resultado": "correcto"
+    },
+    {
+      "prueba": "Rechaza comentario de 501 caracteres",
+      "resultado": "correcto"
+    },
+    {
+      "prueba": "Rechaza estado desconocido",
+      "resultado": "correcto"
+    },
+    {
+      "prueba": "Rechaza cambio de tmdbId",
+      "resultado": "correcto"
+    },
+    {
+      "prueba": "Rechaza cambio de tipo",
+      "resultado": "correcto"
+    },
+    {
+      "prueba": "Rechaza cambio de titulo",
+      "resultado": "correcto"
+    },
+    {
+      "prueba": "Rechaza cambio de agregadoEn",
+      "resultado": "correcto"
+    },
+    {
+      "prueba": "Rechaza cambio de campoExtra",
+      "resultado": "correcto"
+    },
+    {
+      "prueba": "Rechaza fecha de actualización arbitraria",
+      "resultado": "correcto"
+    },
+    {
+      "prueba": "Creación válida con fecha del servidor",
+      "resultado": "correcto"
+    },
+    {
+      "prueba": "Otra cuenta no puede crear en lista ajena",
+      "resultado": "correcto"
+    },
+    {
+      "prueba": "Rechaza creación con estado inicial vista",
+      "resultado": "correcto"
+    },
+    {
+      "prueba": "Rechaza identificador distinto de tipo_tmdbId",
+      "resultado": "correcto"
+    },
+    {
+      "prueba": "Rechaza campo obligatorio ausente",
+      "resultado": "correcto"
+    }
+  ]
+}

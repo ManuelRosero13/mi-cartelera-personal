@@ -228,3 +228,6 @@ Las 30 pruebas de tests/firestore.rules.test.cjs pasaron en el emulador oficial 
 Se ejecutaron también npm run typecheck y npm test correctamente. Las reglas no necesitaron cambios. La confirmación de publicación en producción sigue siendo la del usuario y sus capturas; las pruebas automatizadas validan el archivo local.
 
 Bitácora de IA: Codex creó y ejecutó las pruebas contra el emulador oficial, preparó Java portátil en la carpeta de trabajo sin instalación global y registró el resultado real. Las herramientas portátiles no forman parte de la entrega ni del repositorio.
+
+## Guion de presentación
+Consultar docs/DEMO.md para una demo de 5–7 minutos, preparación previa, preguntas técnicas y lista de entrega. La comprobación visual de Acerca de y la subida de los últimos commits siguen pendientes de confirmación del usuario.

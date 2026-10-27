@@ -37,3 +37,14 @@ export type RutasPila = {
   Inicio: undefined;
   Detalle: { tipo: TipoMedio; id: number };
 };
+
+export type EstadoVisto = 'por_ver' | 'viendo' | 'vista';
+export const ETIQUETA_ESTADO: Record<EstadoVisto, string> = {
+  por_ver: 'Por ver', viendo: 'Viendo', vista: 'Vista',
+};
+export interface ItemLista extends Obra {
+  id: string;
+  estado: EstadoVisto;
+  calificacionPersonal: number | null;
+  comentario: string;
+}

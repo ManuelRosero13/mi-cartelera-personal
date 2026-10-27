@@ -4,7 +4,7 @@
 Aplicación móvil para buscar películas y series en TMDB y guardarlas en una lista privada, con estado de visionado, calificación y comentario personales. Integra React Native, Expo, TypeScript, Firebase Auth, Firestore y AsyncStorage.
 
 ## Estado actual
-Base creada con la plantilla oficial blank-typescript: Expo SDK 58, React Native 0.88 y TypeScript estricto. Incluye registro, inicio y cierre de sesión con Firebase Auth, navegación condicional con React Navigation y persistencia con AsyncStorage. El usuario confirmó la autenticación y persistencia en iPhone. La búsqueda y el detalle de TMDB están implementados. Mi lista se implementará en el Paso 3.
+Base creada con la plantilla oficial blank-typescript: Expo SDK 58, React Native 0.88 y TypeScript estricto. Incluye registro, inicio y cierre de sesión con Firebase Auth, navegación condicional con React Navigation y persistencia con AsyncStorage. El usuario confirmó la autenticación y persistencia en iPhone. La búsqueda y el detalle de TMDB están implementados. Mi lista permite agregar y consultar obras; edición y caché sin conexión pendientes.
 
 ## Pantallas
 - Login / Registro: validación y errores en español.
@@ -104,7 +104,7 @@ Validación local: TypeScript sin errores, dependencias compatibles según Expo,
 Bitácora de IA: Codex implementó la capa de autenticación, el contexto, las pantallas y la navegación condicional, y ejecutó las verificaciones locales. El equipo debe revisar y explicar el flujo antes de entregar.
 
 ## Paso 2 — Búsqueda implementada
-- Pestañas Buscar y Cuenta; las tarjetas abren la ficha de detalle. Mi lista está pendiente.
+- Pestañas Buscar y Cuenta; las tarjetas abren la ficha de detalle. Mi lista permite agregar y consultar obras.
 - Servicio TMDB con búsqueda combinada (excluye personas), idioma español, paginación, tiempo máximo de 15 segundos y errores en español.
 - Configuración de imágenes obtenida desde /configuration y almacenada en memoria; tamaños pequeños para las tarjetas.
 - Tarjetas con título, año, tipo y reemplazo si falta o falla el póster.
@@ -126,7 +126,7 @@ Bitácora de IA: Codex implementó y comprobó el servicio de búsqueda, tipos, 
 
 Verificaciones locales: TypeScript sin errores; Origen (película) y Breaking Bad (serie) con elenco real; casos sintéticos sin póster, sinopsis, votos ni elenco; respuesta 404 e identificador inválido. Se comprobó una sola petición de detalle y elenco por obra.
 
-Prueba pendiente de RF3 en iPhone: abrir una película y una serie desde Buscar, revisar póster, sinopsis, calificación y elenco, y regresar a los resultados. Con internet desactivado, abrir otra ficha para comprobar el error y el reintento. Agregar a Mi lista se implementará en el Paso 3.
+Prueba pendiente de RF3 en iPhone: abrir una película y una serie desde Buscar, revisar póster, sinopsis, calificación y elenco, y regresar a los resultados. Con internet desactivado, abrir otra ficha para comprobar el error y el reintento. Agregar a Mi lista permite agregar y consultar obras; edición y caché sin conexión pendientes.
 
 Bitácora de IA: Codex añadió tipos de detalle y elenco, normalización, la pantalla DetalleTmdb y navegación desde tarjetas, y ejecutó las comprobaciones locales. El usuario debe revisar y poder explicar el código.
 
@@ -135,10 +135,32 @@ El usuario confirmó que creó Firestore. Se preparó firestore.rules para la su
 
 Las reglas restringen lectura, creación, edición y eliminación al propietario autenticado. Validan campos obligatorios y permitidos, identificador tipo_tmdbId, estado, comentario de hasta 500 caracteres y calificación de 1 a 5 únicamente para obras vistas. La creación exige por_ver, comentario vacío y calificación nula. Las fechas se escriben con serverTimestamp; solo se pueden editar estado, calificación, comentario y actualizadoEn. Otras rutas quedan cerradas.
 
-### Publicación pendiente
-Abrir Firestore Database → Reglas, reemplazar el contenido por firestore.rules y publicar. firebase.json referencia el mismo archivo para una futura publicación mediante Firebase CLI. No se ha desplegado automáticamente ni ejecutado todavía el simulador de reglas.
+### Publicación confirmada por el usuario
+Abrir Firestore Database → Reglas, reemplazar el contenido por firestore.rules y publicar. firebase.json referencia el mismo archivo para una futura publicación mediante Firebase CLI. El usuario confirmó la publicación desde la consola. Todavía no se ha ejecutado el simulador de reglas.
 
 ### Pruebas de seguridad pendientes
 En el simulador de reglas, probar get de usuarios/usuarioA/mi_lista/movie_550 autenticado como usuarioA (permitido), como usuarioB (denegado) y sin autenticación (denegado). Después, probar las operaciones desde dos cuentas reales y capturar el acceso ajeno denegado para docs/. Las pruebas de escritura deben usar los campos y timestamps exigidos; la aplicación enviará serverTimestamp.
 
 Bitácora de IA: Codex preparó las reglas a partir del modelo del proyecto. La publicación y validación con el simulador están pendientes; no se considera completado RF de seguridad todavía.
+
+## Paso 3 — Agregar y consultar Mi lista
+- Servicio listaService separado de las pantallas, con transacción de creación y escucha de la subcolección privada.
+- Identificador fijo tipo_tmdbId: una transacción comprueba la existencia y no sobrescribe una entrada existente.
+- Estado inicial por_ver, calificación nula, comentario vacío y fechas con serverTimestamp.
+- Botón Agregar a mi lista en el detalle y pestaña Mi lista con actualización al confirmar Firestore.
+- El contexto asocia la lista al uid y cancela la escucha anterior para no mostrar datos de otra cuenta.
+- Espera máxima visible de 15 segundos. Un timeout no cancela una escritura ya enviada: el aviso indica revisar la lista y la escucha reconcilia confirmaciones tardías.
+- En esta entrega todavía no hay caché persistente de la lista ni edición, eliminación o filtros. La persistencia de sesión sigue funcionando.
+
+Pruebas locales: TypeScript y 13 comprobaciones de identidad, campos permitidos, estado inicial, lectura y validación del modelo. Falta comprobar operaciones reales con una cuenta autenticada y realizar pruebas de seguridad con dos cuentas y simulador.
+
+### Prueba manual pendiente
+1. Abrir una película y pulsar Agregar a mi lista.
+2. Comprobar que aparece en Mi lista como Por ver.
+3. Reabrir su ficha: debe indicar Ya está en Mi lista.
+4. Agregar dos obras más, incluyendo una serie.
+5. En Firebase → Firestore → Datos, comprobar usuarios/{uid}/mi_lista y sus tres documentos. El documento padre del usuario puede aparecer sin campos: las subcolecciones no requieren crear un perfil.
+6. Cerrar y reabrir la app con conexión y comprobar que carga la lista guardada.
+7. Iniciar sesión con otra cuenta: no debe mostrar las obras de la primera. Esto no sustituye la prueba de acceso ajeno en el simulador.
+
+Bitácora de IA: Codex implementó el modelo de lista, la creación transaccional, la escucha, su integración en Context y las pantallas. El guardado real queda pendiente de la prueba del usuario.

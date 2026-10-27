@@ -1,4 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useCartelera } from '../context/CarteleraContext';
+import { mensajeLista } from '../services/listaModel';
+import { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -7,6 +9,22 @@ import { obtenerConfiguracion, obtenerDetalle, urlImagen } from '../services/tmd
 import type { ConfiguracionImagenes, DetalleObra, EstadoPeticion, RutasPila } from '../types';
 export function DetalleTmdb({ route }: NativeStackScreenProps<RutasPila, 'Detalle'>) {
   const { tipo, id } = route.params;
+  const { lista, agregar } = useCartelera();
+  const [guardando, setGuardando] = useState(false);
+  const [mensajeGuardado, setMensajeGuardado] = useState('');
+  const enviando = useRef(false);
+  const montado = useRef(true);
+  useEffect(() => { montado.current = true; return () => { montado.current = false; }; }, []);
+  const existe = lista.tipo === 'exito' && lista.datos.some(item => item.id === `${tipo}_${id}`);
+  async function guardar(obra: DetalleObra) {
+    if (enviando.current) return;
+    enviando.current = true; setGuardando(true); setMensajeGuardado('');
+    try {
+      const creada = await agregar(obra);
+      if (montado.current) setMensajeGuardado(creada ? 'Agregada a Mi lista como Por ver.' : 'Esta obra ya estaba en tu lista.');
+    } catch (error: unknown) { if (montado.current) setMensajeGuardado(mensajeLista(error)); }
+    finally { enviando.current = false; if (montado.current) setGuardando(false); }
+  }
   const [estado, setEstado] = useState<EstadoPeticion<DetalleObra>>({ tipo: 'cargando' });
   const [config, setConfig] = useState<ConfiguracionImagenes | null>(null);
   const [intento, setIntento] = useState(0);
@@ -35,9 +53,12 @@ export function DetalleTmdb({ route }: NativeStackScreenProps<RutasPila, 'Detall
     <Text style={styles.title}>{obra.titulo}</Text>
     <Text style={styles.text}>{obra.tipo === 'movie' ? 'Película' : 'Serie'} · {obra.anio || 'Año no disponible'}</Text>
     <Text style={styles.rating}>{obra.calificacionTmdb === null ? 'TMDB · Sin calificaciones' : `TMDB · ${obra.calificacionTmdb.toFixed(1)} / 10`}</Text>
+    {existe ? <Text style={styles.rating}>Ya está en Mi lista</Text> : <Boton titulo="Agregar a mi lista" ocupado={guardando} onPress={() => { void guardar(obra); }} />}
+    {!!mensajeGuardado && <Text accessibilityLiveRegion="polite" style={styles.text}>{mensajeGuardado}</Text>}
     <Text style={styles.heading}>Sinopsis</Text><Text style={styles.text}>{obra.sinopsis}</Text>
     <Text style={styles.heading}>Elenco</Text>
     {obra.elenco.length ? obra.elenco.map((actor, index) => <View key={`${actor.id}_${index}`} style={styles.actor}><Text style={styles.name}>{actor.nombre}</Text><Text style={styles.text}>{actor.personaje}</Text></View>) : <Text style={styles.text}>No hay información del elenco disponible.</Text>}
   </ScrollView></SafeAreaView>;
 }
 const styles = StyleSheet.create({ safe: { flex: 1, backgroundColor: '#101322' }, center: { flex: 1, backgroundColor: '#101322', justifyContent: 'center', padding: 28, gap: 16 }, content: { padding: 24 }, poster: { width: '100%', maxWidth: 300, aspectRatio: 2 / 3, alignSelf: 'center', borderRadius: 16 }, placeholder: { backgroundColor: '#20253B', alignItems: 'center', justifyContent: 'center' }, title: { color: '#FFFFFF', fontSize: 30, fontWeight: '800', marginTop: 24 }, text: { color: '#C1C6D8', fontSize: 16, lineHeight: 25, marginTop: 8 }, rating: { color: '#D3C9FF', fontWeight: '700', fontSize: 18, marginTop: 16 }, heading: { color: '#FFFFFF', fontWeight: '700', fontSize: 22, marginTop: 28 }, actor: { borderBottomWidth: 1, borderBottomColor: '#343B55', paddingVertical: 12 }, name: { color: '#FFFFFF', fontSize: 17, fontWeight: '600' } });
+

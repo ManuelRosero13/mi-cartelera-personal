@@ -24,3 +24,13 @@ export function mensajeLista(error: unknown): string {
   }
   return error instanceof Error ? error.message : 'No se pudo completar la operación.';
 }
+
+export function validarEdicion(datos: import('../types').EdicionEntrada): import('../types').EdicionEntrada {
+  if (!['por_ver', 'viendo', 'vista'].includes(datos.estado)) throw new Error('Selecciona un estado válido.');
+  if (typeof datos.comentario !== 'string' || datos.comentario.length > 500) throw new Error('El comentario admite hasta 500 caracteres.');
+  if (datos.calificacionPersonal !== null && (datos.estado !== 'vista' || !Number.isFinite(datos.calificacionPersonal) || datos.calificacionPersonal < 1 || datos.calificacionPersonal > 5)) throw new Error('Solo puedes calificar de 1 a 5 una obra vista.');
+  return { estado: datos.estado, calificacionPersonal: datos.calificacionPersonal, comentario: datos.comentario };
+}
+export function filtrarLista(items: ItemLista[], estado: ItemLista['estado'] | 'todos', tipo: Obra['tipo'] | 'todos'): ItemLista[] {
+  return items.filter(item => (estado === 'todos' || item.estado === estado) && (tipo === 'todos' || item.tipo === tipo));
+}

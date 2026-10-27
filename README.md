@@ -4,7 +4,7 @@
 Aplicación móvil para buscar películas y series en TMDB y guardarlas en una lista privada, con estado de visionado, calificación y comentario personales. Integra React Native, Expo, TypeScript, Firebase Auth, Firestore y AsyncStorage.
 
 ## Estado actual
-Base creada con la plantilla oficial blank-typescript: Expo SDK 58, React Native 0.88 y TypeScript estricto. Incluye registro, inicio y cierre de sesión con Firebase Auth, navegación condicional con React Navigation y persistencia con AsyncStorage. El usuario confirmó la autenticación y persistencia en iPhone. La búsqueda y el detalle de TMDB están implementados. Mi lista permite agregar y consultar obras; edición y caché sin conexión pendientes.
+Base creada con la plantilla oficial blank-typescript: Expo SDK 58, React Native 0.88 y TypeScript estricto. Incluye registro, inicio y cierre de sesión con Firebase Auth, navegación condicional con React Navigation y persistencia con AsyncStorage. El usuario confirmó la autenticación y persistencia en iPhone. La búsqueda y el detalle de TMDB están implementados. Mi lista permite agregar y consultar obras; edición, filtros y eliminación implementados; caché sin conexión implementada, pendiente de prueba en dispositivo.
 
 ## Pantallas
 - Login / Registro: validación y errores en español.
@@ -126,7 +126,7 @@ Bitácora de IA: Codex implementó y comprobó el servicio de búsqueda, tipos, 
 
 Verificaciones locales: TypeScript sin errores; Origen (película) y Breaking Bad (serie) con elenco real; casos sintéticos sin póster, sinopsis, votos ni elenco; respuesta 404 e identificador inválido. Se comprobó una sola petición de detalle y elenco por obra.
 
-Prueba pendiente de RF3 en iPhone: abrir una película y una serie desde Buscar, revisar póster, sinopsis, calificación y elenco, y regresar a los resultados. Con internet desactivado, abrir otra ficha para comprobar el error y el reintento. Agregar a Mi lista permite agregar y consultar obras; edición y caché sin conexión pendientes.
+Prueba pendiente de RF3 en iPhone: abrir una película y una serie desde Buscar, revisar póster, sinopsis, calificación y elenco, y regresar a los resultados. Con internet desactivado, abrir otra ficha para comprobar el error y el reintento. Agregar a Mi lista permite agregar y consultar obras; edición, filtros y eliminación implementados; caché sin conexión implementada, pendiente de prueba en dispositivo.
 
 Bitácora de IA: Codex añadió tipos de detalle y elenco, normalización, la pantalla DetalleTmdb y navegación desde tarjetas, y ejecutó las comprobaciones locales. El usuario debe revisar y poder explicar el código.
 
@@ -150,7 +150,7 @@ Bitácora de IA: Codex preparó las reglas a partir del modelo del proyecto. La 
 - Botón Agregar a mi lista en el detalle y pestaña Mi lista con actualización al confirmar Firestore.
 - El contexto asocia la lista al uid y cancela la escucha anterior para no mostrar datos de otra cuenta.
 - Espera máxima visible de 15 segundos. Un timeout no cancela una escritura ya enviada: el aviso indica revisar la lista y la escucha reconcilia confirmaciones tardías.
-- En esta entrega todavía no hay caché persistente de la lista ni edición, eliminación o filtros. La persistencia de sesión sigue funcionando.
+- La caché persistente se incorporó después; consultar la sección de modo sin conexión. La edición, eliminación y los filtros se incorporaron en la siguiente entrega. La persistencia de sesión sigue funcionando.
 
 Pruebas locales: TypeScript y 13 comprobaciones de identidad, campos permitidos, estado inicial, lectura y validación del modelo. Falta comprobar operaciones reales con una cuenta autenticada y realizar pruebas de seguridad con dos cuentas y simulador.
 
@@ -163,4 +163,44 @@ Pruebas locales: TypeScript y 13 comprobaciones de identidad, campos permitidos,
 6. Cerrar y reabrir la app con conexión y comprobar que carga la lista guardada.
 7. Iniciar sesión con otra cuenta: no debe mostrar las obras de la primera. Esto no sustituye la prueba de acceso ajeno en el simulador.
 
-Bitácora de IA: Codex implementó el modelo de lista, la creación transaccional, la escucha, su integración en Context y las pantallas. El guardado real queda pendiente de la prueba del usuario.
+Bitácora de IA: Codex implementó el modelo de lista, la creación transaccional, la escucha, su integración en Context y las pantallas. El usuario confirmó el guardado real y la consulta en el dispositivo.
+
+## Paso 3 — Edición, filtros y eliminación
+Al tocar una tarjeta de Mi lista se abre Editar mi entrada. Permite cambiar estado, calificación de 1 a 5 (solo Vista) y comentario de hasta 500 caracteres. Cambiar de Vista a otro estado borra la calificación. La lista muestra la nota personal y permite combinar filtros por estado y por película/serie, con una opción Todos.
+
+Quitar de Mi lista muestra una confirmación nativa con Cancelar y Quitar. El borrado y la edición usan transacciones con lectura previa, tiempo máximo visible y actualización por la escucha de Firestore. Solo se editan los campos personales y actualizadoEn; se conservan la identidad y agregadoEn. Las reglas publicadas ya contemplan estas operaciones y no se modificaron.
+
+Validaciones locales: TypeScript sin errores y 13 comprobaciones de calificación, comentarios de 500/501 caracteres y filtros combinados. Las escrituras y el diálogo nativo requieren validación manual en el iPhone.
+
+### Prueba manual pendiente de RF5, RF6 y RF7
+1. Abrir una entrada desde Mi lista, marcar Vista, seleccionar 5 estrellas, escribir un comentario y guardar.
+2. Volver a abrirla y comprobar los valores; comprobar también el documento en Firestore.
+3. Cambiar a Viendo y guardar: la nota debe quedar nula.
+4. Combinar filtros Vista/Series y Por ver/Películas; comprobar también una combinación vacía.
+5. Pulsar Quitar y luego Cancelar: la entrada debe conservarse. Repetir y confirmar Quitar: debe desaparecer de la lista y de Firestore.
+6. Cerrar y reabrir con internet para verificar la persistencia de los cambios.
+
+Bitácora de IA: Codex implementó la edición, validaciones, filtros y confirmación de borrado. La caché sin conexión se incorporó después. Las pruebas de aislamiento con reglas reales entre cuentas siguen pendientes.
+
+## Paso 3 — Copia local y modo sin conexión
+- AsyncStorage conserva la última lista confirmada por Firestore, incluida una lista vacía tras eliminar todas las entradas.
+- Cada copia utiliza una clave distinta por uid, con versión y comprobación del usuario dentro del contenido. No se mezclan listas al cambiar de cuenta.
+- Las escrituras de caché se ejecutan en orden por usuario para que una actualización antigua no sobrescriba una reciente.
+- NetInfo detecta la conexión y se actualiza al regresar a primer plano. Sin conexión se muestra la copia y un aviso; al recuperarla se vuelve a escuchar Firestore.
+- Las mutaciones requieren conexión. Los cambios no se ponen en una cola offline. Se mantiene el límite visible de espera y el aviso ante resultados de escritura inciertos.
+- Cada snapshot confirmado de altas, ediciones y bajas actualiza estado y caché. Si el almacenamiento local falla se indica que los datos están en Firestore pero no se pudo guardar la copia.
+- Una caché corrupta se rechaza; al conectar se recupera desde Firestore. Sin caché y sin red se explica que es necesario conectarse.
+
+Pruebas automatizadas: `npm test` comprueba aislamiento por cuenta, contenido corrupto, versión inválida, escritura ordenada, lista vacía, recuperación después de error de almacenamiento, restricciones de calificación/comentario y filtros. `npm run typecheck` comprueba TypeScript. Estas pruebas usan almacenamiento simulado; no sustituyen las pruebas en iPhone ni del servidor de reglas.
+
+### Prueba manual pendiente de modo sin conexión
+1. Con internet, abrir Mi lista y esperar que desaparezca el aviso de actualización.
+2. Activar modo avión y apagar Wi-Fi si sigue activo. Volver a la app ya cargada: debe mostrar la lista y el aviso Sin conexión.
+3. Consultar una entrada guardada; intentar guardar debe explicar que necesita internet.
+4. Reactivar internet: la lista debe actualizarse y retirar el aviso.
+5. Editar o eliminar una entrada, esperar la confirmación y repetir la prueba sin conexión: la copia debe reflejar el cambio.
+6. Comprobar dos cuentas por separado. Una cuenta sin caché no debe mostrar datos de otra.
+
+Expo Go necesita acceso al servidor de desarrollo para cargar el código al arrancar. Primero probar el modo avión con la app cargada; un fallo al descargar el paquete de desarrollo no es un fallo de la caché de datos.
+
+Bitácora de IA: Codex añadió los servicios de caché y conexión, el aislamiento y recuperación en el contexto, los avisos y pruebas automatizadas. La edición, eliminación y modo sin conexión están pendientes de validación manual del usuario. Continúan pendientes los créditos/logo de TMDB y las pruebas de reglas con evidencias.

@@ -36,6 +36,7 @@ export type RutasPila = {
   Login: undefined;
   Inicio: undefined;
   Detalle: { tipo: TipoMedio; id: number };
+  Editar: { id: string };
 };
 
 export type EstadoVisto = 'por_ver' | 'viendo' | 'vista';
@@ -48,3 +49,6 @@ export interface ItemLista extends Obra {
   calificacionPersonal: number | null;
   comentario: string;
 }
+
+export type EdicionEntrada = Pick<ItemLista, 'estado' | 'calificacionPersonal' | 'comentario'>;
+

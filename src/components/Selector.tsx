@@ -1,0 +1,5 @@
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+export function Selector<T extends string>({ opciones, valor, cambiar, disabled = false }: { opciones: { valor: T; etiqueta: string }[]; valor: T; cambiar: (valor: T) => void; disabled?: boolean }) {
+  return <View style={styles.row}>{opciones.map(opcion => <Pressable key={opcion.valor} accessibilityRole="button" accessibilityState={{ selected: valor === opcion.valor, disabled }} disabled={disabled} onPress={() => cambiar(opcion.valor)} style={[styles.button, valor === opcion.valor && styles.selected, disabled && { opacity: 0.5 }]}><Text style={styles.text}>{opcion.etiqueta}</Text></Pressable>)}</View>;
+}
+const styles = StyleSheet.create({ row: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginVertical: 10 }, button: { minHeight: 44, justifyContent: 'center', paddingHorizontal: 14, paddingVertical: 10, borderRadius: 10, backgroundColor: '#282D45', borderWidth: 1, borderColor: '#4C536D' }, selected: { backgroundColor: '#6750C6', borderColor: '#C4B8FF' }, text: { color: '#FFFFFF', fontSize: 15 } });

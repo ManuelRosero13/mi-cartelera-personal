@@ -1,3 +1,4 @@
+import { EditarEntrada } from './src/screens/EditarEntrada';
 import { MiLista } from './src/screens/MiLista';
 import { StatusBar } from 'expo-status-bar';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
@@ -25,12 +26,13 @@ function Navegacion() {
   const { sesion, reintentar } = useCartelera();
   if (sesion.tipo === 'cargando') return <View style={styles.center}><ActivityIndicator size="large" color="#B6AAFF" /><Text style={styles.text}>Recuperando tu sesión…</Text></View>;
   if (sesion.tipo === 'error') return <View style={styles.center}><Text accessibilityRole="alert" style={styles.text}>{sesion.mensaje}</Text><Boton titulo="Reintentar" onPress={reintentar} /></View>;
-  return <NavigationContainer theme={DarkTheme}><Stack.Navigator screenOptions={{ headerShown: false }}>{sesion.usuario ? <Stack.Group><Stack.Screen name="Inicio" component={Pantallas} /><Stack.Screen name="Detalle" component={DetalleTmdb} options={{ headerShown: true, title: 'Detalle', headerStyle: { backgroundColor: '#101322' }, headerTintColor: '#FFFFFF' }} /></Stack.Group> : <Stack.Screen name="Login" component={Login} />}</Stack.Navigator></NavigationContainer>;
+  return <NavigationContainer theme={DarkTheme}><Stack.Navigator screenOptions={{ headerShown: false }}>{sesion.usuario ? <Stack.Group><Stack.Screen name="Inicio" component={Pantallas} /><Stack.Screen name="Detalle" component={DetalleTmdb} options={{ headerShown: true, title: 'Detalle', headerStyle: { backgroundColor: '#101322' }, headerTintColor: '#FFFFFF' }} /><Stack.Screen name="Editar" component={EditarEntrada} options={{ headerShown: true, title: 'Editar mi entrada', headerStyle: { backgroundColor: '#101322' }, headerTintColor: '#FFFFFF' }} /></Stack.Group> : <Stack.Screen name="Login" component={Login} />}</Stack.Navigator></NavigationContainer>;
 }
 export default function App() {
   return <SafeAreaProvider><CarteleraProvider><StatusBar style="light" /><Navegacion /></CarteleraProvider></SafeAreaProvider>;
 }
 const styles = StyleSheet.create({ center: { flex: 1, backgroundColor: '#101322', justifyContent: 'center', padding: 28 }, text: { color: '#FFFFFF', marginTop: 16, fontSize: 17, textAlign: 'center' } });
+
 
 
 

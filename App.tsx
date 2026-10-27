@@ -8,18 +8,18 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { CarteleraProvider, useCartelera } from './src/context/CarteleraContext';
 import { Boton } from './src/components/Boton';
 import { Login } from './src/screens/Login';
-import { Inicio } from './src/screens/Inicio';
+import { Acerca } from './src/screens/Acerca';
 import { Buscar } from './src/screens/Buscar';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import type { RutasPila } from './src/types';
 import { DetalleTmdb } from './src/screens/DetalleTmdb';
 const Stack = createNativeStackNavigator<RutasPila>();
-const Tabs = createBottomTabNavigator<{ Buscar: undefined; MiLista: undefined; Cuenta: undefined }>();
+const Tabs = createBottomTabNavigator<{ Buscar: undefined; MiLista: undefined; Acerca: undefined }>();
 function Pantallas() {
   return <Tabs.Navigator screenOptions={{ headerStyle: { backgroundColor: '#101322' }, headerTintColor: '#FFFFFF', tabBarStyle: { backgroundColor: '#20253B' }, tabBarActiveTintColor: '#C4B8FF', tabBarInactiveTintColor: '#C1C6D8', tabBarItemStyle: { minHeight: 44 } }}>
     <Tabs.Screen name="Buscar" component={Buscar} options={{ tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 22 }}>⌕</Text> }} />
     <Tabs.Screen name="MiLista" component={MiLista} options={{ title: 'Mi lista', tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 22 }}>≡</Text> }} />
-    <Tabs.Screen name="Cuenta" component={Inicio} options={{ tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 22 }}>●</Text> }} />
+    <Tabs.Screen name="Acerca" component={Acerca} options={{ title: 'Acerca de', tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 22 }}>●</Text> }} />
   </Tabs.Navigator>;
 }
 function Navegacion() {
@@ -32,6 +32,7 @@ export default function App() {
   return <SafeAreaProvider><CarteleraProvider><StatusBar style="light" /><Navegacion /></CarteleraProvider></SafeAreaProvider>;
 }
 const styles = StyleSheet.create({ center: { flex: 1, backgroundColor: '#101322', justifyContent: 'center', padding: 28 }, text: { color: '#FFFFFF', marginTop: 16, fontSize: 17, textAlign: 'center' } });
+
 
 
 

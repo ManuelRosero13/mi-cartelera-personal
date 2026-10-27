@@ -4,7 +4,7 @@
 Aplicación móvil para buscar películas y series en TMDB y guardarlas en una lista privada, con estado de visionado, calificación y comentario personales. Integra React Native, Expo, TypeScript, Firebase Auth, Firestore y AsyncStorage.
 
 ## Estado actual
-Base creada con la plantilla oficial blank-typescript: Expo SDK 58, React Native 0.88 y TypeScript estricto. Incluye registro, inicio y cierre de sesión con Firebase Auth, navegación condicional con React Navigation y persistencia con AsyncStorage. El usuario confirmó la autenticación y persistencia en iPhone. La búsqueda y el detalle de TMDB están implementados. Mi lista permite agregar y consultar obras; edición, filtros y eliminación implementados; caché sin conexión implementada, pendiente de prueba en dispositivo.
+Base creada con la plantilla oficial blank-typescript: Expo SDK 58, React Native 0.88 y TypeScript estricto. Incluye registro, inicio y cierre de sesión con Firebase Auth, navegación condicional con React Navigation y persistencia con AsyncStorage. El usuario confirmó la autenticación y persistencia en iPhone. La búsqueda y el detalle de TMDB están implementados. Mi lista permite agregar y consultar obras; edición, filtros y eliminación implementados; caché sin conexión implementada, confirmada por el usuario en dispositivo.
 
 ## Pantallas
 - Login / Registro: validación y errores en español.
@@ -126,7 +126,7 @@ Bitácora de IA: Codex implementó y comprobó el servicio de búsqueda, tipos, 
 
 Verificaciones locales: TypeScript sin errores; Origen (película) y Breaking Bad (serie) con elenco real; casos sintéticos sin póster, sinopsis, votos ni elenco; respuesta 404 e identificador inválido. Se comprobó una sola petición de detalle y elenco por obra.
 
-Prueba pendiente de RF3 en iPhone: abrir una película y una serie desde Buscar, revisar póster, sinopsis, calificación y elenco, y regresar a los resultados. Con internet desactivado, abrir otra ficha para comprobar el error y el reintento. Agregar a Mi lista permite agregar y consultar obras; edición, filtros y eliminación implementados; caché sin conexión implementada, pendiente de prueba en dispositivo.
+Prueba pendiente de RF3 en iPhone: abrir una película y una serie desde Buscar, revisar póster, sinopsis, calificación y elenco, y regresar a los resultados. Con internet desactivado, abrir otra ficha para comprobar el error y el reintento. Agregar a Mi lista permite agregar y consultar obras; edición, filtros y eliminación implementados; caché sin conexión implementada, confirmada por el usuario en dispositivo.
 
 Bitácora de IA: Codex añadió tipos de detalle y elenco, normalización, la pantalla DetalleTmdb y navegación desde tarjetas, y ejecutó las comprobaciones locales. El usuario debe revisar y poder explicar el código.
 
@@ -170,9 +170,9 @@ Al tocar una tarjeta de Mi lista se abre Editar mi entrada. Permite cambiar esta
 
 Quitar de Mi lista muestra una confirmación nativa con Cancelar y Quitar. El borrado y la edición usan transacciones con lectura previa, tiempo máximo visible y actualización por la escucha de Firestore. Solo se editan los campos personales y actualizadoEn; se conservan la identidad y agregadoEn. Las reglas publicadas ya contemplan estas operaciones y no se modificaron.
 
-Validaciones locales: TypeScript sin errores y 13 comprobaciones de calificación, comentarios de 500/501 caracteres y filtros combinados. Las escrituras y el diálogo nativo requieren validación manual en el iPhone.
+Validaciones locales: TypeScript sin errores y 13 comprobaciones de calificación, comentarios de 500/501 caracteres y filtros combinados. El usuario confirmó el funcionamiento de esta entrega en el iPhone.
 
-### Prueba manual pendiente de RF5, RF6 y RF7
+### Prueba manual de RF5, RF6 y RF7 (confirmada por el usuario)
 1. Abrir una entrada desde Mi lista, marcar Vista, seleccionar 5 estrellas, escribir un comentario y guardar.
 2. Volver a abrirla y comprobar los valores; comprobar también el documento en Firestore.
 3. Cambiar a Viendo y guardar: la nota debe quedar nula.
@@ -193,7 +193,7 @@ Bitácora de IA: Codex implementó la edición, validaciones, filtros y confirma
 
 Pruebas automatizadas: `npm test` comprueba aislamiento por cuenta, contenido corrupto, versión inválida, escritura ordenada, lista vacía, recuperación después de error de almacenamiento, restricciones de calificación/comentario y filtros. `npm run typecheck` comprueba TypeScript. Estas pruebas usan almacenamiento simulado; no sustituyen las pruebas en iPhone ni del servidor de reglas.
 
-### Prueba manual pendiente de modo sin conexión
+### Prueba manual de modo sin conexión (confirmada por el usuario)
 1. Con internet, abrir Mi lista y esperar que desaparezca el aviso de actualización.
 2. Activar modo avión y apagar Wi-Fi si sigue activo. Volver a la app ya cargada: debe mostrar la lista y el aviso Sin conexión.
 3. Consultar una entrada guardada; intentar guardar debe explicar que necesita internet.
@@ -203,4 +203,11 @@ Pruebas automatizadas: `npm test` comprueba aislamiento por cuenta, contenido co
 
 Expo Go necesita acceso al servidor de desarrollo para cargar el código al arrancar. Primero probar el modo avión con la app cargada; un fallo al descargar el paquete de desarrollo no es un fallo de la caché de datos.
 
-Bitácora de IA: Codex añadió los servicios de caché y conexión, el aislamiento y recuperación en el contexto, los avisos y pruebas automatizadas. La edición, eliminación y modo sin conexión están pendientes de validación manual del usuario. Continúan pendientes los créditos/logo de TMDB y las pruebas de reglas con evidencias.
+Bitácora de IA: Codex añadió los servicios de caché y conexión, el aislamiento y recuperación en el contexto, los avisos y pruebas automatizadas. El usuario confirmó edición, eliminación y modo sin conexión. Se añadieron créditos/logo de TMDB; siguen pendientes las pruebas de reglas con evidencias.
+
+## Acerca de y preparación de la entrega
+La pestaña Acerca de incluye nombre y versión de la app, descripción, aviso obligatorio de TMDB, logo oficial incorporado sin conexión, enlace a TMDB, cuenta y cierre de sesión. El archivo assets/TMDB.md registra la procedencia del logo y su atribución. La marca de la app es más prominente y el logo conserva sus proporciones y colores.
+
+Pendiente: comprobar visualmente los créditos en iPhone y completar las pruebas de seguridad y capturas de docs/VERIFICACION.md. Las reglas publicadas todavía no tienen una prueba de aislamiento documentada; no se considera finalizada la entrega.
+
+Bitácora de IA: Codex incorporó el logo oficial y los créditos y preparó la guía de pruebas y evidencias. No generó ni inventó capturas de Firebase.

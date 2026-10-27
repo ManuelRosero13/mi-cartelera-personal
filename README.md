@@ -4,7 +4,7 @@
 Aplicación móvil para buscar películas y series en TMDB y guardarlas en una lista privada, con estado de visionado, calificación y comentario personales. Integra React Native, Expo, TypeScript, Firebase Auth, Firestore y AsyncStorage.
 
 ## Estado actual
-Base creada con la plantilla oficial blank-typescript: Expo SDK 58, React Native 0.88 y TypeScript estricto. Incluye registro, inicio y cierre de sesión con Firebase Auth, navegación condicional con React Navigation y persistencia con AsyncStorage. La prueba de autenticación en dispositivo está pendiente. El catálogo y la lista se implementarán en los siguientes pasos.
+Base creada con la plantilla oficial blank-typescript: Expo SDK 58, React Native 0.88 y TypeScript estricto. Incluye registro, inicio y cierre de sesión con Firebase Auth, navegación condicional con React Navigation y persistencia con AsyncStorage. El usuario confirmó la autenticación y persistencia en iPhone. El catálogo y la lista se implementarán en los siguientes pasos.
 
 ## Pantallas
 - Login / Registro: validación y errores en español.
@@ -55,7 +55,7 @@ No subir .env al repositorio. Las variables EXPO_PUBLIC_ son visibles en el paqu
 - [x] Token de TMDB comprobado con una búsqueda real (Inception, 27 de octubre de 2026).
 - [x] Expo con TypeScript funcionando en Expo Go (confirmado por el usuario en iPhone).
 - [x] Compilación de TypeScript sin errores.
-- [ ] Registro, inicio, cierre y persistencia de sesión verificados.
+- [x] Registro, inicio, cierre y persistencia de sesión verificados por el usuario en iPhone.
 
 ## Créditos previstos
 Acerca de incluirá el logo de TMDB, menos prominente que la marca de la app, y el aviso:
@@ -90,7 +90,7 @@ Base Expo: Codex generó la plantilla oficial, añadió el comando dev, creó la
 - Contexto de sesión con estados de carga, error y éxito; la pila se reconstruye al iniciar o cerrar sesión.
 - La declaración src/types/firebase-auth.d.ts completa el tipo de una función nativa que Firebase exporta en ejecución pero omite en sus declaraciones generales.
 
-### Verificación manual de RF1 (pendiente)
+### Verificación manual de RF1 (confirmada por el usuario)
 1. Reiniciar Expo con `npm run dev -- --clear` y abrir la app en el iPhone.
 2. Pulsar Crear una cuenta, introducir un correo propio y contraseña de al menos 6 caracteres, confirmarla y crear la cuenta.
 3. Comprobar que aparece el correo en la app y el usuario en Firebase Authentication → Users.
@@ -99,6 +99,19 @@ Base Expo: Codex generó la plantilla oficial, añadió el comando dev, creó la
 6. Iniciar sesión con la misma cuenta. Probar también una contraseña incorrecta para ver el error en español.
 7. Cerrar sesión, cerrar completamente Expo Go y reabrir: debe continuar en el login.
 
-Validación local: TypeScript sin errores, dependencias compatibles según Expo, 8 comprobaciones de formulario y traducción correctas, variables Firebase completas y paquete iOS de desarrollo sin bytecode generado. No se ha creado una cuenta de prueba automáticamente ni se ha comprobado todavía la persistencia en el dispositivo.
+Validación local: TypeScript sin errores, dependencias compatibles según Expo, 8 comprobaciones de formulario y traducción correctas, variables Firebase completas y paquete iOS de desarrollo sin bytecode generado. No se ha creado una cuenta de prueba automáticamente y la persistencia fue comprobada posteriormente por el usuario en iPhone.
 
 Bitácora de IA: Codex implementó la capa de autenticación, el contexto, las pantallas y la navegación condicional, y ejecutó las verificaciones locales. El equipo debe revisar y explicar el flujo antes de entregar.
+
+## Paso 2 — Búsqueda implementada
+- Pestañas Buscar y Cuenta; la ficha de detalle y Mi lista están pendientes.
+- Servicio TMDB con búsqueda combinada (excluye personas), idioma español, paginación, tiempo máximo de 15 segundos y errores en español.
+- Configuración de imágenes obtenida desde /configuration y almacenada en memoria; tamaños pequeños para las tarjetas.
+- Tarjetas con título, año, tipo y reemplazo si falta o falla el póster.
+- Estados de carga, error, éxito y búsqueda vacía. Las respuestas antiguas no reemplazan una consulta más reciente.
+- Pruebas locales: búsquedas reales de Inception y Breaking Bad, búsqueda sin resultados, segunda página, respuesta 429 y error de red simulado, obras sin póster ni fecha.
+
+### Prueba pendiente en iPhone
+Reiniciar con `npm run dev -- --clear`. Buscar Inception, Breaking Bad y zzxxqql938372xyz. Buscar Star y avanzar de página. Desactivar internet y hacer una búsqueda nueva para comprobar el mensaje de error; reactivar internet y reintentar. La ficha al tocar una obra se añadirá en el siguiente paso.
+
+Bitácora de IA: Codex implementó y comprobó el servicio de búsqueda, tipos, tarjetas y pestañas. RF2 queda pendiente de confirmación visual en el dispositivo. El resto del Paso 2 continúa pendiente.

@@ -25,3 +25,15 @@ export interface ConfiguracionImagenes {
   secure_base_url: string;
   poster_sizes: string[];
 }
+
+export interface IntegranteElenco { id: number; nombre: string; personaje: string }
+export interface DetalleObra extends Obra {
+  sinopsis: string;
+  calificacionTmdb: number | null;
+  elenco: IntegranteElenco[];
+}
+export type RutasPila = {
+  Login: undefined;
+  Inicio: undefined;
+  Detalle: { tipo: TipoMedio; id: number };
+};

@@ -1,0 +1,51 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function esPropietario(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+
+    function esItemValido(d, itemId) {
+      let campos = ['tmdbId', 'tipo', 'titulo', 'anio', 'posterPath',
+                    'estado', 'calificacionPersonal', 'comentario',
+                    'agregadoEn', 'actualizadoEn'];
+      return d.keys().hasAll(campos)
+        && d.keys().hasOnly(campos)
+        && d.tmdbId is int && d.tmdbId > 0
+        && d.tipo in ['movie', 'tv']
+        && itemId == d.tipo + '_' + string(d.tmdbId)
+        && d.titulo is string && d.titulo.size() > 0 && d.titulo.size() <= 200
+        && d.anio is string && (d.anio == '' || d.anio.matches('^[0-9]{4}$'))
+        && (d.posterPath == null || (d.posterPath is string && d.posterPath.size() <= 500))
+        && d.estado in ['por_ver', 'viendo', 'vista']
+        && d.comentario is string && d.comentario.size() <= 500
+        && (d.calificacionPersonal == null
+            || (d.estado == 'vista'
+                && d.calificacionPersonal is number
+                && d.calificacionPersonal >= 1 && d.calificacionPersonal <= 5))
+        && d.agregadoEn is timestamp
+        && d.actualizadoEn is timestamp;
+    }
+
+    match /usuarios/{uid}/mi_lista/{itemId} {
+      allow read, delete: if esPropietario(uid);
+
+      // La obra siempre se agrega con estado inicial y hora del servidor.
+      allow create: if esPropietario(uid)
+        && esItemValido(request.resource.data, itemId)
+        && request.resource.data.estado == 'por_ver'
+        && request.resource.data.calificacionPersonal == null
+        && request.resource.data.comentario == ''
+        && request.resource.data.agregadoEn == request.time
+        && request.resource.data.actualizadoEn == request.time;
+
+      // Solo se editan los datos personales; la identidad y fecha de alta se conservan.
+      allow update: if esPropietario(uid)
+        && esItemValido(request.resource.data, itemId)
+        && request.resource.data.diff(resource.data).affectedKeys()
+             .hasOnly(['estado', 'calificacionPersonal', 'comentario', 'actualizadoEn'])
+        && request.resource.data.actualizadoEn == request.time;
+    }
+    // Todo acceso a otras rutas queda denegado por defecto.
+  }
+}

@@ -129,3 +129,16 @@ Verificaciones locales: TypeScript sin errores; Origen (película) y Breaking Ba
 Prueba pendiente de RF3 en iPhone: abrir una película y una serie desde Buscar, revisar póster, sinopsis, calificación y elenco, y regresar a los resultados. Con internet desactivado, abrir otra ficha para comprobar el error y el reintento. Agregar a Mi lista se implementará en el Paso 3.
 
 Bitácora de IA: Codex añadió tipos de detalle y elenco, normalización, la pantalla DetalleTmdb y navegación desde tarjetas, y ejecutó las comprobaciones locales. El usuario debe revisar y poder explicar el código.
+
+## Paso 3 — Base de datos y reglas
+El usuario confirmó que creó Firestore. Se preparó firestore.rules para la subcolección usuarios/{uid}/mi_lista/{itemId}.
+
+Las reglas restringen lectura, creación, edición y eliminación al propietario autenticado. Validan campos obligatorios y permitidos, identificador tipo_tmdbId, estado, comentario de hasta 500 caracteres y calificación de 1 a 5 únicamente para obras vistas. La creación exige por_ver, comentario vacío y calificación nula. Las fechas se escriben con serverTimestamp; solo se pueden editar estado, calificación, comentario y actualizadoEn. Otras rutas quedan cerradas.
+
+### Publicación pendiente
+Abrir Firestore Database → Reglas, reemplazar el contenido por firestore.rules y publicar. firebase.json referencia el mismo archivo para una futura publicación mediante Firebase CLI. No se ha desplegado automáticamente ni ejecutado todavía el simulador de reglas.
+
+### Pruebas de seguridad pendientes
+En el simulador de reglas, probar get de usuarios/usuarioA/mi_lista/movie_550 autenticado como usuarioA (permitido), como usuarioB (denegado) y sin autenticación (denegado). Después, probar las operaciones desde dos cuentas reales y capturar el acceso ajeno denegado para docs/. Las pruebas de escritura deben usar los campos y timestamps exigidos; la aplicación enviará serverTimestamp.
+
+Bitácora de IA: Codex preparó las reglas a partir del modelo del proyecto. La publicación y validación con el simulador están pendientes; no se considera completado RF de seguridad todavía.

@@ -49,10 +49,11 @@ No subir .env al repositorio. Las variables EXPO_PUBLIC_ son visibles en el paqu
 ## Verificaciones del Paso 1
 - [x] README previo a la programación.
 - [x] .gitignore y .env.example sin credenciales.
-- [ ] Repositorio en GitHub y primer commit.
+- [x] Primer commit local creado.
+- [ ] Repositorio publicado en GitHub.
 - [ ] Colaborador docente, si el repositorio es privado.
 - [ ] Token de TMDB comprobado con una búsqueda real.
-- [ ] Expo con TypeScript funcionando en Expo Go.
+- [x] Expo con TypeScript funcionando en Expo Go (confirmado por el usuario en iPhone).
 - [x] Compilación de TypeScript sin errores.
 - [ ] Registro, inicio, cierre y persistencia de sesión verificados.
 
@@ -65,7 +66,7 @@ This product uses the TMDB API but is not endorsed or certified by TMDB.
 Preparación inicial: Codex ayudó a redactar el README y los archivos de configuración a partir del enunciado. El equipo debe revisar y comprender todo el material entregado.
 
 ## Comprobaciones locales
-Ejecutar `npm run typecheck` para comprobar TypeScript. Para abrir la app, ejecutar `npm run dev` y escanear el QR con Expo Go compatible con SDK 58, usando la misma red Wi-Fi. La prueba en teléfono sigue pendiente.
+Ejecutar `npm run typecheck` para comprobar TypeScript. Para abrir la app, ejecutar `npm run dev` y escanear el QR con Expo Go compatible con SDK 58, usando la misma red Wi-Fi. El usuario confirmó el arranque en Expo Go en su iPhone.
 
 ## Continuación en GitHub
 Crear un repositorio vacío llamado mi-cartelera-personal en la cuenta del equipo. Su URL se utilizará después para conectar este repositorio local. No se ha publicado todavía.
@@ -78,5 +79,6 @@ Base Expo: Codex generó la plantilla oficial, añadió el comando dev, creó la
 - Versiones de dependencias: compatibles según Expo.
 - Paquete Android de desarrollo sin bytecode: generado correctamente.
 - Exportación de producción: pendiente de resolver un fallo del compilador Hermes (código de salida 6) en este entorno Windows. No se considera verificada para producción.
-- Ejecución en Expo Go: pendiente de probar en dispositivo físico.
+- Ejecución en Expo Go: arranque en iPhone confirmado por el usuario.
+
 

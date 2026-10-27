@@ -214,3 +214,5 @@ Bitácora de IA: Codex incorporó el logo oficial y los créditos y preparó la 
 
 ### Evidencias de lectura de Firestore
 El usuario aportó capturas del simulador: lectura del propietario permitida, de otra cuenta denegada y sin sesión denegada. Están guardadas en docs/. La separación visual de las listas entre dos cuentas también fue confirmada por el usuario. Faltan pruebas de escritura/eliminación ajenas, validaciones de campos y capturas de Authentication y la subcolección con al menos tres documentos.
+
+Evidencia adicional: el usuario aportó la captura de delete ajeno rechazado en el simulador, guardada en docs/reglas-borrado-ajeno-denegado.png. Las pruebas específicas de actualización y validación de campos siguen pendientes.

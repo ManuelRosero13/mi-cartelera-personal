@@ -43,3 +43,8 @@ Se guardaron las capturas reales enviadas por el usuario:
 La ruta se muestra truncada en las capturas; no se transcribió ni se inventó su parte oculta. El usuario realizó las pruebas manteniendo la ruta según las instrucciones del chat. Estas evidencias corresponden a lectura: no acreditan todavía denegación de modificación o eliminación ajenas ni validación de campos.
 
 Pendientes: simulación delete con UID ajeno, pruebas de escritura inválida y capturas auth-users.png y firestore-mi-lista.png.
+
+## Evidencia de borrado ajeno recibida
+reglas-borrado-ajeno-denegado.png muestra la operación delete con autenticación de un UID diferente al propietario de la ruta y el resultado rechazado. La prueba fue realizada en el simulador; no eliminó datos reales. Se suma a las pruebas de lectura. La ruta completa continúa truncada visualmente.
+
+Pendientes actualizados: captura de Authentication → Users, captura de mi_lista con al menos tres documentos, y pruebas específicas de actualización ajena y validación de campos en el servidor.

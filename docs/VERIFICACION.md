@@ -48,3 +48,6 @@ Pendientes: simulación delete con UID ajeno, pruebas de escritura inválida y c
 reglas-borrado-ajeno-denegado.png muestra la operación delete con autenticación de un UID diferente al propietario de la ruta y el resultado rechazado. La prueba fue realizada en el simulador; no eliminó datos reales. Se suma a las pruebas de lectura. La ruta completa continúa truncada visualmente.
 
 Pendientes actualizados: captura de Authentication → Users, captura de mi_lista con al menos tres documentos, y pruebas específicas de actualización ajena y validación de campos en el servidor.
+
+## Evidencia de Authentication recibida
+Se guardó auth-users.png: captura real de Authentication → Usuarios con dos cuentas y proveedor de correo electrónico. Queda pendiente la captura de mi_lista mostrando al menos tres documentos; la imagen anterior solo mostraba dos.

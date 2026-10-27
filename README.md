@@ -216,3 +216,6 @@ Bitácora de IA: Codex incorporó el logo oficial y los créditos y preparó la 
 El usuario aportó capturas del simulador: lectura del propietario permitida, de otra cuenta denegada y sin sesión denegada. Están guardadas en docs/. La separación visual de las listas entre dos cuentas también fue confirmada por el usuario. Faltan pruebas de escritura/eliminación ajenas, validaciones de campos y capturas de Authentication y la subcolección con al menos tres documentos.
 
 Evidencia adicional: el usuario aportó la captura de delete ajeno rechazado en el simulador, guardada en docs/reglas-borrado-ajeno-denegado.png. Las pruebas específicas de actualización y validación de campos siguen pendientes.
+
+### Capturas mínimas de entrega completas
+En docs/ se encuentran auth-users.png, firestore-mi-lista.png (tres documentos) y reglas-acceso-ajeno-denegado.png, además de las evidencias complementarias de lectura propia permitida, lectura sin sesión denegada y borrado ajeno denegado. Estas capturas reales sustituyen los pendientes históricos sobre imágenes. Aún deben completarse las pruebas específicas de actualización ajena/validación de campos y subirse los últimos commits a GitHub.

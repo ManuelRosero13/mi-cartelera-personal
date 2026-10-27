@@ -51,3 +51,8 @@ Pendientes actualizados: captura de Authentication → Users, captura de mi_list
 
 ## Evidencia de Authentication recibida
 Se guardó auth-users.png: captura real de Authentication → Usuarios con dos cuentas y proveedor de correo electrónico. Queda pendiente la captura de mi_lista mostrando al menos tres documentos; la imagen anterior solo mostraba dos.
+
+## Capturas obligatorias completas
+Se recibió firestore-mi-lista.png, que muestra tres documentos: movie_239459, tv_1396 y tv_42009. Quedan reunidas las tres evidencias mínimas del enunciado: Authentication → Usuarios, mi_lista con tres documentos y acceso ajeno denegado en el simulador.
+
+Esta actualización reemplaza los pendientes anteriores relativos a esas capturas. Siguen pendientes las pruebas específicas de actualización ajena y validación de campos del servidor, y la subida de los últimos commits a GitHub.

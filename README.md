@@ -211,3 +211,6 @@ La pestaña Acerca de incluye nombre y versión de la app, descripción, aviso o
 Pendiente: comprobar visualmente los créditos en iPhone y completar las pruebas de seguridad y capturas de docs/VERIFICACION.md. Las reglas publicadas todavía no tienen una prueba de aislamiento documentada; no se considera finalizada la entrega.
 
 Bitácora de IA: Codex incorporó el logo oficial y los créditos y preparó la guía de pruebas y evidencias. No generó ni inventó capturas de Firebase.
+
+### Evidencias de lectura de Firestore
+El usuario aportó capturas del simulador: lectura del propietario permitida, de otra cuenta denegada y sin sesión denegada. Están guardadas en docs/. La separación visual de las listas entre dos cuentas también fue confirmada por el usuario. Faltan pruebas de escritura/eliminación ajenas, validaciones de campos y capturas de Authentication y la subcolección con al menos tres documentos.

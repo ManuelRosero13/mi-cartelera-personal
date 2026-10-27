@@ -33,3 +33,13 @@ No incluir contraseñas, tokens ni el archivo .env. Las capturas deben ser reale
 
 ## Demo breve
 Registro/login → buscar película y serie → abrir ficha → agregar → filtros → editar como Vista con nota y comentario → cancelar borrado y luego confirmar → modo avión con lista cargada → recuperar conexión → créditos → cerrar sesión.
+
+## Evidencias de lectura recibidas
+Se guardaron las capturas reales enviadas por el usuario:
+- reglas-propietario-permitido.png: get autenticado como propietario autorizado.
+- reglas-acceso-ajeno-denegado.png: get autenticado con otro UID rechazado.
+- reglas-sin-sesion-denegado.png: get sin autenticación rechazado.
+
+La ruta se muestra truncada en las capturas; no se transcribió ni se inventó su parte oculta. El usuario realizó las pruebas manteniendo la ruta según las instrucciones del chat. Estas evidencias corresponden a lectura: no acreditan todavía denegación de modificación o eliminación ajenas ni validación de campos.
+
+Pendientes: simulación delete con UID ajeno, pruebas de escritura inválida y capturas auth-users.png y firestore-mi-lista.png.

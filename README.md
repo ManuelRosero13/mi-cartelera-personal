@@ -4,7 +4,7 @@
 Aplicación móvil para buscar películas y series en TMDB y guardarlas en una lista privada, con estado de visionado, calificación y comentario personales. Integra React Native, Expo, TypeScript, Firebase Auth, Firestore y AsyncStorage.
 
 ## Estado actual
-Base creada con la plantilla oficial blank-typescript: Expo SDK 58, React Native 0.88 y TypeScript estricto. Incluye una pantalla de bienvenida; Firebase, TMDB y las funciones de la lista siguen pendientes.
+Base creada con la plantilla oficial blank-typescript: Expo SDK 58, React Native 0.88 y TypeScript estricto. Incluye registro, inicio y cierre de sesión con Firebase Auth, navegación condicional con React Navigation y persistencia con AsyncStorage. La prueba de autenticación en dispositivo está pendiente. El catálogo y la lista se implementarán en los siguientes pasos.
 
 ## Pantallas
 - Login / Registro: validación y errores en español.
@@ -50,9 +50,9 @@ No subir .env al repositorio. Las variables EXPO_PUBLIC_ son visibles en el paqu
 - [x] README previo a la programación.
 - [x] .gitignore y .env.example sin credenciales.
 - [x] Primer commit local creado.
-- [ ] Repositorio publicado en GitHub.
+- [x] Repositorio publicado en GitHub (confirmado por el usuario).
 - [ ] Colaborador docente, si el repositorio es privado.
-- [ ] Token de TMDB comprobado con una búsqueda real.
+- [x] Token de TMDB comprobado con una búsqueda real (Inception, 27 de octubre de 2026).
 - [x] Expo con TypeScript funcionando en Expo Go (confirmado por el usuario en iPhone).
 - [x] Compilación de TypeScript sin errores.
 - [ ] Registro, inicio, cierre y persistencia de sesión verificados.
@@ -69,7 +69,7 @@ Preparación inicial: Codex ayudó a redactar el README y los archivos de config
 Ejecutar `npm run typecheck` para comprobar TypeScript. Para abrir la app, ejecutar `npm run dev` y escanear el QR con Expo Go compatible con SDK 58, usando la misma red Wi-Fi. El usuario confirmó el arranque en Expo Go en su iPhone.
 
 ## Continuación en GitHub
-Crear un repositorio vacío llamado mi-cartelera-personal en la cuenta del equipo. Su URL se utilizará después para conectar este repositorio local. No se ha publicado todavía.
+Repositorio: https://github.com/ManuelRosero13/mi-cartelera-personal. Primera versión publicada; los cambios locales posteriores se subirán con git push.
 
 Base Expo: Codex generó la plantilla oficial, añadió el comando dev, creó las carpetas por capas y personalizó la pantalla inicial.
 
@@ -82,3 +82,23 @@ Base Expo: Codex generó la plantilla oficial, añadió el comando dev, creó la
 - Ejecución en Expo Go: arranque en iPhone confirmado por el usuario.
 
 
+
+## Autenticación implementada
+- Login y registro con correo, contraseña y confirmación al registrar.
+- Errores traducidos al español y controles deshabilitados durante el envío.
+- Firebase Auth inicializado con persistencia en AsyncStorage; no se guarda la contraseña en la app.
+- Contexto de sesión con estados de carga, error y éxito; la pila se reconstruye al iniciar o cerrar sesión.
+- La declaración src/types/firebase-auth.d.ts completa el tipo de una función nativa que Firebase exporta en ejecución pero omite en sus declaraciones generales.
+
+### Verificación manual de RF1 (pendiente)
+1. Reiniciar Expo con `npm run dev -- --clear` y abrir la app en el iPhone.
+2. Pulsar Crear una cuenta, introducir un correo propio y contraseña de al menos 6 caracteres, confirmarla y crear la cuenta.
+3. Comprobar que aparece el correo en la app y el usuario en Firebase Authentication → Users.
+4. Cerrar completamente Expo Go y abrir de nuevo el proyecto: debe seguir mostrando la sesión.
+5. Cerrar sesión: debe volver al login sin posibilidad de regresar a la pantalla privada.
+6. Iniciar sesión con la misma cuenta. Probar también una contraseña incorrecta para ver el error en español.
+7. Cerrar sesión, cerrar completamente Expo Go y reabrir: debe continuar en el login.
+
+Validación local: TypeScript sin errores, dependencias compatibles según Expo, 8 comprobaciones de formulario y traducción correctas, variables Firebase completas y paquete iOS de desarrollo sin bytecode generado. No se ha creado una cuenta de prueba automáticamente ni se ha comprobado todavía la persistencia en el dispositivo.
+
+Bitácora de IA: Codex implementó la capa de autenticación, el contexto, las pantallas y la navegación condicional, y ejecutó las verificaciones locales. El equipo debe revisar y explicar el flujo antes de entregar.

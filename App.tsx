@@ -1,36 +1,21 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.eyebrow}>TU PRÓXIMA HISTORIA</Text>
-      <Text style={styles.title}>Mi Cartelera Personal</Text>
-      <Text style={styles.description}>
-        Un lugar para las películas y series que quieres ver.
-      </Text>
-      <View style={styles.card}>
-        <Text style={styles.cardTitle}>Estamos comenzando</Text>
-        <Text style={styles.cardText}>
-          La base de la app está lista. El siguiente paso será crear tu cuenta e iniciar sesión.
-        </Text>
-      </View>
-      <StatusBar style="light" />
-    </View>
-  );
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { DarkTheme, NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { CarteleraProvider, useCartelera } from './src/context/CarteleraContext';
+import { Boton } from './src/components/Boton';
+import { Login } from './src/screens/Login';
+import { Inicio } from './src/screens/Inicio';
+type Rutas = { Login: undefined; Inicio: undefined };
+const Stack = createNativeStackNavigator<Rutas>();
+function Navegacion() {
+  const { sesion, reintentar } = useCartelera();
+  if (sesion.tipo === 'cargando') return <View style={styles.center}><ActivityIndicator size="large" color="#B6AAFF" /><Text style={styles.text}>Recuperando tu sesión…</Text></View>;
+  if (sesion.tipo === 'error') return <View style={styles.center}><Text accessibilityRole="alert" style={styles.text}>{sesion.mensaje}</Text><Boton titulo="Reintentar" onPress={reintentar} /></View>;
+  return <NavigationContainer theme={DarkTheme}><Stack.Navigator screenOptions={{ headerShown: false }}>{sesion.usuario ? <Stack.Screen name="Inicio" component={Inicio} /> : <Stack.Screen name="Login" component={Login} />}</Stack.Navigator></NavigationContainer>;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#101322',
-    justifyContent: 'center',
-    padding: 28,
-  },
-  eyebrow: { color: '#AFA4FF', fontSize: 12, fontWeight: '700', letterSpacing: 2 },
-  title: { color: '#FFFFFF', fontSize: 36, fontWeight: '800', marginTop: 16 },
-  description: { color: '#C1C6D8', fontSize: 18, lineHeight: 27, marginTop: 16 },
-  card: { backgroundColor: '#20253B', borderRadius: 20, padding: 24, marginTop: 36 },
-  cardTitle: { color: '#FFFFFF', fontSize: 18, fontWeight: '600', marginBottom: 10 },
-  cardText: { color: '#C1C6D8', fontSize: 16, lineHeight: 24 },
-});
+export default function App() {
+  return <SafeAreaProvider><CarteleraProvider><StatusBar style="light" /><Navegacion /></CarteleraProvider></SafeAreaProvider>;
+}
+const styles = StyleSheet.create({ center: { flex: 1, backgroundColor: '#101322', justifyContent: 'center', padding: 28 }, text: { color: '#FFFFFF', marginTop: 16, fontSize: 17, textAlign: 'center' } });
